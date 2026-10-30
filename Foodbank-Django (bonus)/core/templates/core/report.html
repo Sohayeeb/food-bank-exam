@@ -1,21 +1,50 @@
+
 {% extends 'core/base.html' %}
+
 {% block content %}
+
 <h2 class="page-title">Report</h2>
 
+<!-- Statistics -->
 <div class="grid-2" style="margin-bottom: 24px;">
+
     <div class="stat">
         <div class="stat-val">{{ stock }}</div>
         <div class="stat-label">packs in stock</div>
     </div>
+
     <div class="stat">
         <div class="stat-val">{{ total }}</div>
         <div class="stat-label">total given out</div>
     </div>
+
 </div>
 
+
+<!-- Families Section -->
 <div class="card" style="margin-bottom: 20px;">
-    <p style="font-weight:500; margin-bottom:16px; font-size:13.5px;">Families</p>
+
+    <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+    ">
+
+        <p style="font-weight: 500; margin: 0; font-size: 13.5px;">
+            Families
+        </p>
+
+        <a href="{% url 'manage_families' %}" class="manage-families-btn">
+            Manage Families
+        </a>
+
+    </div>
+
     {% if families %}
+
     <table>
         <thead>
             <tr>
@@ -24,6 +53,7 @@
                 <th>Members</th>
             </tr>
         </thead>
+
         <tbody>
             {% for f in families %}
             <tr>
@@ -34,14 +64,25 @@
             {% endfor %}
         </tbody>
     </table>
+
     {% else %}
+
     <p class="empty">none yet</p>
+
     {% endif %}
+
 </div>
 
+
+<!-- Distribution History Section -->
 <div class="card">
-    <p style="font-weight:500; margin-bottom:16px; font-size:13.5px;">History</p>
+
+    <p style="font-weight: 500; margin-bottom: 16px; font-size: 13.5px;">
+        History
+    </p>
+
     {% if history %}
+
     <table>
         <thead>
             <tr>
@@ -50,18 +91,52 @@
                 <th>When</th>
             </tr>
         </thead>
+
         <tbody>
             {% for d in history %}
             <tr>
-                <td>{{ d.family.family_id }} – {{ d.family.name }}</td>
+                <td>
+                    {{ d.family.family_id }} – {{ d.family.name }}
+                </td>
+
                 <td>{{ d.packs }}</td>
-                <td style="color: var(--muted);">{{ d.distributed_at|date:"M d, H:i" }}</td>
+
+                <td style="color: var(--muted);">
+                    {{ d.distributed_at|date:"M d, H:i" }}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
     {% else %}
+
     <p class="empty">nothing yet</p>
+
     {% endif %}
+
 </div>
+
+
+<!-- Manage Families Button Styling -->
+<style>
+
+    .manage-families-btn {
+        display: inline-block;
+        padding: 9px 15px;
+        background: #dc3545;
+        color: white;
+        text-decoration: none;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.2s ease;
+    }
+
+    .manage-families-btn:hover {
+        background: #b02a37;
+    }
+
+</style>
+
 {% endblock %}

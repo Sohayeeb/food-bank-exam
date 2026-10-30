@@ -1,6 +1,7 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 from django.db.models import Sum
 
 from .models import Family, FoodStock, Distribution
@@ -12,7 +13,6 @@ def get_stock():
 
 
 def index(request):
-    # Display the report on the homepage without changing the URL.
     return report(request)
 
 
@@ -60,16 +60,14 @@ def add_food(request):
         except ValueError:
             messages.error(request, 'Enter a valid number.')
             return render(
-                request,
-                'core/add_food.html',
+                request, 'core/add_food.html',
                 {'stock': stock.packs}
             )
 
         if packs <= 0:
             messages.error(request, 'Must add a positive number of packs.')
             return render(
-                request,
-                'core/add_food.html',
+                request, 'core/add_food.html',
                 {'stock': stock.packs}
             )
 
@@ -80,12 +78,10 @@ def add_food(request):
             request,
             f'Added {packs} packs. Stock is now {stock.packs}.'
         )
-
         return redirect('add_food')
 
     return render(
-        request,
-        'core/add_food.html',
+        request, 'core/add_food.html',
         {'stock': stock.packs}
     )
 
@@ -102,8 +98,7 @@ def distribute(request):
         except ValueError:
             messages.error(request, 'Enter a valid number.')
             return render(
-                request,
-                'core/distribute.html',
+                request, 'core/distribute.html',
                 {'stock': stock.packs, 'families': families}
             )
 
@@ -112,16 +107,14 @@ def distribute(request):
         except Family.DoesNotExist:
             messages.error(request, f'Family {fid} not found.')
             return render(
-                request,
-                'core/distribute.html',
+                request, 'core/distribute.html',
                 {'stock': stock.packs, 'families': families}
             )
 
         if packs <= 0:
             messages.error(request, 'Packs must be positive.')
             return render(
-                request,
-                'core/distribute.html',
+                request, 'core/distribute.html',
                 {'stock': stock.packs, 'families': families}
             )
 
@@ -131,8 +124,7 @@ def distribute(request):
                 f'Not enough stock. Available: {stock.packs}.'
             )
             return render(
-                request,
-                'core/distribute.html',
+                request, 'core/distribute.html',
                 {'stock': stock.packs, 'families': families}
             )
 
@@ -149,13 +141,39 @@ def distribute(request):
             f'Distributed {packs} packs to {family.name}. '
             f'Remaining: {stock.packs}.'
         )
-
         return redirect('distribute')
 
     return render(
-        request,
-        'core/distribute.html',
+        request, 'core/distribute.html',
         {'stock': stock.packs, 'families': families}
+    )
+
+
+@require_POST
+def delete_family(request, family_id):
+    family = get_object_or_404(Family, pk=family_id)
+
+    deleted_name = family.name
+    deleted_id = family.family_id
+
+    family.delete()
+
+    messages.success(
+        request,
+        f'Family {deleted_name} (ID: {deleted_id}) '
+        f'and all its distribution history have been deleted.'
+    )
+
+    return redirect('manage_families')
+
+
+def manage_families(request):
+    families = Family.objects.all().order_by('family_id')
+
+    return render(
+        request,
+        'core/manage_families.html',
+        {'families': families}
     )
 
 
