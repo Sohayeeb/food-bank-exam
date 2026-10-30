@@ -17,7 +17,7 @@ No external packages required. Python 3.x only.
 ### Django App (Bonus)
 
 ```bash
-cd foodbank
+cd Foodbank-Django (bonus)
 pip install django
 python manage.py migrate
 python manage.py runserver
