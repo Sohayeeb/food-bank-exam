@@ -1,0 +1,6 @@
+echo __pycache__/ > .gitignore
+echo *.pyc >> .gitignore
+echo db.sqlite3 >> .gitignore
+git add .
+git commit -m "initial commit"
+gh repo create food-bank-exam --public --source=. --remote=origin --push
