@@ -1,6 +1,30 @@
-echo __pycache__/ > .gitignore
-echo *.pyc >> .gitignore
-echo db.sqlite3 >> .gitignore
-git add .
-git commit -m "initial commit"
-gh repo create food-bank-exam --public --source=. --remote=origin --push
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django databases
+*.sqlite3
+db.sqlite3
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Django generated files
+staticfiles/
+media/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
