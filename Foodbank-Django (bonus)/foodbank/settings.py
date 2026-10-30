@@ -24,11 +24,15 @@ DEBUG = os.environ.get(
 ).lower() == "true"
 
 ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    ".vercel.app",
+    "food-bank-exam-q7jam2zkx-patient0.vercel.app",
+]
+
+ALLOWED_HOSTS += [
     host.strip()
-    for host in os.environ.get(
-        "ALLOWED_HOSTS",
-        "localhost,127.0.0.1,.vercel.app"
-    ).split(",")
+    for host in os.environ.get("ALLOWED_HOSTS", "").split(",")
     if host.strip()
 ]
 
