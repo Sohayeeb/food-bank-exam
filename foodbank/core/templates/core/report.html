@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2 class="page-title">Report</h2>
+
+<div class="grid-2" style="margin-bottom: 24px;">
+    <div class="stat">
+        <div class="stat-val">{{ stock }}</div>
+        <div class="stat-label">packs in stock</div>
+    </div>
+    <div class="stat">
+        <div class="stat-val">{{ total }}</div>
+        <div class="stat-label">total given out</div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 20px;">
+    <p style="font-weight:500; margin-bottom:16px; font-size:13.5px;">Families</p>
+    {% if families %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Members</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in families %}
+            <tr>
+                <td>{{ f.family_id }}</td>
+                <td>{{ f.name }}</td>
+                <td>{{ f.members }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty">none yet</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <p style="font-weight:500; margin-bottom:16px; font-size:13.5px;">History</p>
+    {% if history %}
+    <table>
+        <thead>
+            <tr>
+                <th>Family</th>
+                <th>Packs</th>
+                <th>When</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in history %}
+            <tr>
+                <td>{{ d.family.family_id }} – {{ d.family.name }}</td>
+                <td>{{ d.packs }}</td>
+                <td style="color: var(--muted);">{{ d.distributed_at|date:"M d, H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty">nothing yet</p>
+    {% endif %}
+</div>
+{% endblock %}

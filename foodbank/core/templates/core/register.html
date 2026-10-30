@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2 class="page-title">Add a family</h2>
+
+{% for msg in messages %}
+<div class="msg {% if msg.tags == 'success' %}success{% else %}error{% endif %}">{{ msg }}</div>
+{% endfor %}
+
+<div class="card" style="max-width: 440px;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <label>Family ID</label>
+            <input type="text" name="family_id" autocomplete="off" required>
+        </div>
+        <div class="form-row">
+            <label>Name</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-row">
+            <label>No. of members</label>
+            <input type="number" name="members" min="1" required>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}
